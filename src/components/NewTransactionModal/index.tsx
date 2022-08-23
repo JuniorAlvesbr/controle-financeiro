@@ -1,7 +1,9 @@
 import Modal from 'react-modal'
-import { Container } from './styles';
+import { Container, TransactionTypeContainer } from './styles';
 
 import closeImage from '../../../public/assets/close.svg'
+import incomeImg from '../../../public/assets/income.svg'
+import outcomeImg from '../../../public/assets/outcome.svg'
 
 Modal.setAppElement('#root')
 
@@ -24,12 +26,22 @@ export function NewTransectionModal({ isOpen, onRequestClose }: props) {
 
       <Container>
         <h2>Cadastrar trazações</h2>
-        <form>
-          <input type="text" placeholder='titulo' />
-          <input type="number" placeholder='valor' />
-          <input type="number" placeholder='categoria' />
-          <button type="submit">Cadastrar</button>
-        </form>
+        <input type="text" placeholder='titulo' />
+        <input type="number" placeholder='valor' />
+
+        <TransactionTypeContainer>
+          <button type='button'>
+            <img src={incomeImg} alt="Entrada" />
+            <span>Entrada</span>
+          </button>
+          <button type='button'>
+            <img src={outcomeImg} alt="Saida" />
+            <span>Saida</span>
+          </button>
+        </TransactionTypeContainer>
+
+        <input type="number" placeholder='categoria' />
+        <button type="submit">Cadastrar</button>
       </Container>
     </Modal>
   )
