@@ -2,9 +2,27 @@ import { Container, Content } from "./styles";
 import income from '../../../public/assets/income.svg'
 import outcome from '../../../public/assets/outcome.svg'
 import total from '../../../public/assets/total.svg'
-
+import { useTransactions } from "../../hooks/useTransaction";
 
 export function Sumary() {
+  const { transactions } = useTransactions()
+
+  const summary = transactions.reduce((acc, transaction) => {
+    if (transaction.type === 'deposit') {
+      acc.deposits += transaction.amount
+      acc.total += transaction.amount
+    } else {
+      acc.withdraws += transaction.amount
+      acc.total -= transaction.amount
+    }
+
+    return acc
+  }, {
+    deposits: 0,
+    withdraws: 0,
+    total: 0,
+  })
+
   return (
     <Container>
       <Content>
@@ -12,7 +30,10 @@ export function Sumary() {
           <span>Entrada</span>
           <img src={income} alt="Entrada" />
         </div>
-        <strong>R$ 17.400,00</strong>
+        <strong>{new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(summary.deposits)}</strong>
       </Content>
 
       <Content>
@@ -20,7 +41,12 @@ export function Sumary() {
           <span>Saídas</span>
           <img src={outcome} alt="Saídas" />
         </div>
-        <strong>R$ 1.259,00</strong>
+        <strong>
+          -
+          {new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+          }).format(summary.withdraws)}</strong>
       </Content>
 
       <Content className="highlight-background">
@@ -28,7 +54,10 @@ export function Sumary() {
           <span>Total</span>
           <img src={total} alt="Total" />
         </div>
-        <strong>R$ 16.141,00</strong>
+        <strong>{new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(summary.total)}</strong>
       </Content>
 
     </Container>
